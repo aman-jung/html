@@ -6,13 +6,24 @@ app.get("/",(req,res)=>{
     console.log("HELLO WORLD");
 })
 
-function handle(signal) {
-    console.log(`Received ${signal}`);
-  }
-  
-process.on('SIGINT', handle);
-process.on('SIGTERM', handle);
+process
+  .on('SIGTERM', shutdown('SIGTERM'))
+  .on('SIGINT', shutdown('SIGINT'))
+  .on('uncaughtException', shutdown('uncaughtException'));
+
+setInterval(console.log.bind(console, 'tick'), 1000);
   
 app.listen(process.env.PORT || 5000,()=>{
 	console.log("server is up and running");
 });
+
+function shutdown(signal) {
+    return (err) => {
+      console.log(`${ signal }...`);
+      if (err) console.error(err.stack || err);
+      setTimeout(() => {
+        console.log('...waited 5s, exiting.');
+        process.exit(err ? 1 : 0);
+      }, 5000).unref();
+    };
+  }
