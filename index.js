@@ -9,7 +9,8 @@ app.get("/",(req,res)=>{
 process
   .on('SIGTERM', shutdown('SIGTERM'))
   .on('SIGINT', shutdown('SIGINT'))
-  .on('uncaughtException', shutdown('uncaughtException'));
+  .on('uncaughtException', shutdown('uncaughtException'))
+  .on('SIGKILL',shutdown('SIGKILL'));
 
 setInterval(console.log.bind(console, 'tick'), 1000);
   
