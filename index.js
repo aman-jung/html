@@ -1,8 +1,7 @@
 var express = require('express');
 var app = express();
 
-
-app.get("/favicon.ico",(req,res)=>{
+app.get("/",(req,res)=>{
     console.log("HELLO WORLD");
 })
   
